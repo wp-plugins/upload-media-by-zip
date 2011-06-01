@@ -4,7 +4,7 @@ Plugin Name: Upload Media by Zip
 Plugin URI: http://trepmal.com/plugins/upload-media-by-zip/
 Description: Upload a zip file of images and attach to a page/post
 Author: Kailey Lampert
-Version: 0.2
+Version: 0.3
 Author URI: http://kaileylampert.com/
 */
 /*
@@ -95,8 +95,8 @@ class upload_media_by_zip {
 	}
 
 	function context() {
-		global $post;
-		$button  = '<a class="thickbox" href="'. admin_url( "media-upload.php?post_id={$post->ID}&tab=uploadzip&TB_iframe=1").'" title="Upload and Extract a Zip Archive">';
+		global $post_ID;
+		$button  = '<a class="thickbox" href="'. admin_url( "media-upload.php?post_id={$post_ID}&tab=uploadzip&TB_iframe=1").'" title="Upload and Extract a Zip Archive">';
 		$button .= '<img src="'. plugins_url('media-upload-zip.gif', __FILE__) .'" alt="upload zip archive" />';
 		$button .= '</a>';
 		echo $button;

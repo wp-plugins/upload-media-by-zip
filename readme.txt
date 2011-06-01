@@ -1,4 +1,4 @@
-=== Upload Media by Zip ===
+=== Upload Media ===
 Contributors: trepmal 
 Donate link: http://kaileylampert.com/donate/
 Tags: upload, media library, zip
@@ -16,7 +16,7 @@ Untested on pre-WP3.1. Email me or post to the forums if you learn one way or th
 
 New plugin. Please report bugs to trepmal (at) gmail (dot) com. Thanks!
 
-[on twitter](http://twitter.com/trepmal)
+* [I'm on twitter](http://twitter.com/trepmal)
 
 == Installation ==
 
@@ -30,6 +30,9 @@ If you don't know how to install a plugin, this plugin isn't for you (yet).
 3. Second uploader
 
 == Changelog ==
+
+= 0.3 =
+* fixed compatibility with Quick Press
 
 = 0.2 =
 * added zip uploader to media pop-up
