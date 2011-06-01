@@ -2,7 +2,7 @@
 Contributors: trepmal 
 Donate link: http://kaileylampert.com/donate/
 Tags: upload, media library, zip
-Requires at least: 3.1
+Requires at least: 2.8
 Tested up to: 3.2-beta2
 Stable tag: trunk
 
@@ -12,7 +12,7 @@ Upload a zip archive and let WP unzip it and attach everything to a page/post
 
 Upload a zip archive and let WP unzip it and attach everything to a page/post.
 
-Untested on pre-WP3.1. Email me or post to the forums if you learn one way or the other.
+Works in 2.8! The tabs in the media pop-up are messed up in 2.8, but since it's 2.8, I won't be fixing it :)
 
 New plugin. Please report bugs to trepmal (at) gmail (dot) com. Thanks!
 
@@ -25,11 +25,16 @@ If you don't know how to install a plugin, this plugin isn't for you (yet).
 
 == Screenshots ==
 
-1. Uploader
+1. Original uploader (good if you don't want to attach images to another post)
 2. Zip uploader media button
 3. Second uploader
 
 == Changelog ==
+
+= 0.4 =
+* linked Upload page to better capability (upload_files)
+* works with 2.8! (media upload tabs are wacky in 2.8, but I'm not going to fix it... because it's 2.8)
+* minor wording changes (sticking with "upload zip archive")
 
 = 0.3 =
 * fixed compatibility with Quick Press
