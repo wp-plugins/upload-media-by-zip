@@ -1,4 +1,4 @@
-=== Upload Media ===
+=== Upload Media by Zip ===
 Contributors: trepmal 
 Donate link: http://kaileylampert.com/donate/
 Tags: upload, media library, zip
