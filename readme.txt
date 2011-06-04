@@ -12,7 +12,7 @@ Upload a zip archive and let WP unzip it and attach everything to a page/post
 
 Upload a zip archive and let WP unzip it and attach everything to a page/post.
 
-Works in 2.8! The tabs in the media pop-up are messed up in 2.8, but since it's 2.8, I won't be fixing it :)
+Works in 2.8 (but please please please update your site if you're using somthing that old)! The tabs in the media pop-up are messed up in 2.8, but since it's 2.8, I won't be fixing it :)
 
 New plugin. Please report bugs to trepmal (at) gmail (dot) com. Thanks!
 
@@ -30,6 +30,9 @@ If you don't know how to install a plugin, this plugin isn't for you (yet).
 3. Second uploader
 
 == Changelog ==
+
+= 0.5 =
+* allows contents of a zipped folder to be added successfully to the media library
 
 = 0.4 =
 * linked Upload page to better capability (upload_files)
