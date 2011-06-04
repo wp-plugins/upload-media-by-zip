@@ -122,9 +122,9 @@ class upload_media_by_zip {
 				$return .= "<li style='color:#a00;'>$img_name could not be uploaded</li>";
 			}
 		}
-		if (count($dirs) > 0) {
+		if (count($dirs) >= 1) {
 			foreach ($dirs as $sdir) {
-				$return .= move_from_dir( $sdir, $parent, $return );
+				$return .= self::move_from_dir( $sdir, $parent, $return );
 			}
 		}
 		return $return;
