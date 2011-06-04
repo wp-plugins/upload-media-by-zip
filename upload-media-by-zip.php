@@ -4,7 +4,7 @@ Plugin Name: Upload Media by Zip
 Plugin URI: http://trepmal.com/plugins/upload-media-by-zip/
 Description: Upload a zip file of images and attach to a page/post
 Author: Kailey Lampert
-Version: 0.5
+Version: 0.6
 Author URI: http://kaileylampert.com/
 */
 /*
@@ -102,6 +102,34 @@ class upload_media_by_zip {
 		echo $button;
 	}
 
+	function move_from_dir( $dir, $parent, $return = '' ) {
+		$dirs = array();
+		foreach ( glob("$dir/*") as $img ) {
+			if (is_dir($img)) {
+				$dirs[] = $img;
+				continue;
+			}
+			$img_name = basename( $img );
+			$title = explode( '.', $img_name );
+			array_pop( $title );
+			$title = implode( '.', $title );
+
+			$img_url = str_replace( WP_CONTENT_DIR,WP_CONTENT_URL, $img );
+			$file = array( 'file' => $img, 'tmp_name' => $img, 'name' => $img_name );
+			if (!is_wp_error( media_handle_sideload( $file, $parent, $title ) ) ) {
+				$return .= "<li>$img_name uploaded</li>";
+			} else {
+				$return .= "<li style='color:#a00;'>$img_name could not be uploaded</li>";
+			}
+		}
+		if (count($dirs) > 0) {
+			foreach ($dirs as $sdir) {
+				$return .= move_from_dir( $sdir, $parent, $return );
+			}
+		}
+		return $return;
+	}
+
 	function handler() {
 		wp_enqueue_script('jquery');
 		?><script type="text/javascript">
@@ -131,7 +159,7 @@ jQuery(document).ready(function($){
 
 			WP_Filesystem();
 			$to = plugins_url( 'temp', __FILE__ );
-			$to = str_replace( WP_CONTENT_URL,WP_CONTENT_DIR, $to );
+			$to = str_replace( WP_CONTENT_URL, WP_CONTENT_DIR, $to );
 			$return = '';
 			$return .= '<div class="updated">';
 			$return .= '<ul style="list-style-type: disc; padding: 10px 35px;">';
@@ -141,41 +169,17 @@ jQuery(document).ready(function($){
 			if( unzip_file( $file, $to ) ) {
 				$return .= '<li>'. $upl_name .' extracted</li>';
 				$dirs = array();
-				foreach ( glob("$to/*") as $img ) {
-					if (is_dir($img)) {
-						$dirs[] = $img;
-						continue;
-					}
-					$img_name = basename( $img );
-					$img_url = str_replace( WP_CONTENT_DIR,WP_CONTENT_URL, $img );
-					$file = array( 'file' => $img, 'tmp_name' => $img, 'name' => $img_name );
-					if (!is_wp_error( media_handle_sideload( $file, $parent, $img_name ) ) ) {
-						$return .= "<li>$img_name uploaded</li>";
-					} else {
-						$return .= "<li style='color:#a00;'>$img_name could not be uploaded</li>";
-					}
-				}
-				//move files from subdirectories
-				foreach($dirs as $dir) {
-					foreach ( glob("$dir/*") as $img ) {
-						if (is_dir($img)) {
-							continue;
-						}
-						$img_name = basename( $img );
-						$img_url = str_replace( WP_CONTENT_DIR,WP_CONTENT_URL, $img );
-						$file = array( 'file' => $img, 'tmp_name' => $img, 'name' => $img_name );
-						if (!is_wp_error( media_handle_sideload( $file, $parent, $img_name ) ) ) {
-							$return .= "<li>$img_name uploaded</li>";
-						} else {
-							$return .= "<li style='color:#a00;'>$img_name could not be uploaded</li>";
-						}
-					}
-				}
+				
+				$return .= self::move_from_dir( $to, $parent );
+				
 				//delete zip file
 				$_POST['delete_zip'] = isset( $_POST['delete_zip'] ) ? 1 : 0;
 				if ( $_POST['delete_zip'] ) {
 					wp_delete_attachment( $upl_id );
 					$return .= '<li>'. $upl_name .' deleted</li>';
+				}
+				else {
+					$return .= '<li style="color:#a00;">'. $upl_name .' could not be deleted</li>';
 				}
 				$return .= '</ul>';
 				$return .= '</div>';
@@ -212,3 +216,5 @@ jQuery(document).ready(function($){
 	}
 
 }//end class
+
+

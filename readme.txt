@@ -23,13 +23,6 @@ If you don't know how to install a plugin, this plugin isn't for you (yet).
 
 == Frequently Asked Questions ==
 
-= The archive was uploaded, but none of my files! =
-Up until v0.5, the uploader expected the zip file to contain files only - no folders. Meaning, if you put your files in a folder, then zipped the folder, it wouldn't work correctly.
-You can however, find those unzipped files inside the `temp` folder in the plugin's directory.
-
-= I'm using 0.5 and the archive was uploaded, but none of my files! =
-Your zip file shouldn't have any files deeper than 1 directory. (Zip some files, or zip a folder that has some files in it, but not a folder in a folder...)
-
 = The tabs in the media pop-up are all crazy =
 Sounds like you're using 2.8. Update.
 
@@ -40,6 +33,10 @@ Sounds like you're using 2.8. Update.
 3. Second uploader
 
 == Changelog ==
+
+= 0.6 =
+* zipped folders (any depth) now good-to-go
+* file extensions removed from title, like core uploader
 
 = 0.5 =
 * allows contents of a zipped folder to be added successfully to the media library
