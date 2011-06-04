@@ -34,6 +34,9 @@ Sounds like you're using 2.8. Update.
 
 == Changelog ==
 
+= 0.7 =
+* fun with recursion - funky stuff should be fixed - sorry for the double update
+
 = 0.6 =
 * zipped folders (any depth) now good-to-go
 * file extensions removed from title, like core uploader

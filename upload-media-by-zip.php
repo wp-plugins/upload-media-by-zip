@@ -4,7 +4,7 @@ Plugin Name: Upload Media by Zip
 Plugin URI: http://trepmal.com/plugins/upload-media-by-zip/
 Description: Upload a zip file of images and attach to a page/post
 Author: Kailey Lampert
-Version: 0.6
+Version: 0.7
 Author URI: http://kaileylampert.com/
 */
 /*
@@ -103,30 +103,41 @@ class upload_media_by_zip {
 	}
 
 	function move_from_dir( $dir, $parent, $return = '' ) {
-		$dirs = array();
-		foreach ( glob("$dir/*") as $img ) {
-			if (is_dir($img)) {
-				$dirs[] = $img;
-				continue;
-			}
+		//make sure we have a trailing slash
+		$dir .= '/'; $dir = str_replace('//','/', $dir);
+
+		$here = glob("$dir*.*" ); //get files
+
+		$dirs = glob("$dir*", GLOB_ONLYDIR|GLOB_MARK ); //get subdirectories
+		
+		//start with subs, less confusing
+		foreach ($dirs as $k => $sdir) {
+			$return .= self::move_from_dir( $sdir, $parent, $return );			
+		}
+
+		//loop through files and add them to the media library
+		foreach ( $here as $img ) {
 			$img_name = basename( $img );
 			$title = explode( '.', $img_name );
 			array_pop( $title );
 			$title = implode( '.', $title );
 
-			$img_url = str_replace( WP_CONTENT_DIR,WP_CONTENT_URL, $img );
+			$img_url = str_replace( WP_CONTENT_DIR, WP_CONTENT_URL, $img );
 			$file = array( 'file' => $img, 'tmp_name' => $img, 'name' => $img_name );
 			if (!is_wp_error( media_handle_sideload( $file, $parent, $title ) ) ) {
 				$return .= "<li>$img_name uploaded</li>";
 			} else {
-				$return .= "<li style='color:#a00;'>$img_name could not be uploaded</li>";
+				$return .= "<li style='color:#a00;'>$img_name ($dir) could not be uploaded.";
+				if (is_file($img) && unlink($img) )
+					$return .= " It has been deleted.";
+				$return .= "</li>";
 			}
+
 		}
-		if (count($dirs) >= 1) {
-			foreach ($dirs as $sdir) {
-				$return .= self::move_from_dir( $sdir, $parent, $return );
-			}
-		}
+
+		//delete any folders that were unzipped
+		if ( basename( $dir ) != 'temp') rmdir( $dir );
+
 		return $return;
 	}
 
@@ -216,5 +227,3 @@ jQuery(document).ready(function($){
 	}
 
 }//end class
-
-
