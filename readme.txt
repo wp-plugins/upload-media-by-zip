@@ -12,8 +12,6 @@ Upload a zip archive and let WP unzip it and attach everything to a page/post
 
 Upload a zip archive and let WP unzip it and attach everything to a page/post.
 
-Works in 2.8 (but please please please update your site if you're using somthing that old)! The tabs in the media pop-up are messed up in 2.8, but since it's 2.8, I won't be fixing it :)
-
 New plugin. Please report bugs to trepmal (at) gmail (dot) com. Thanks!
 
 * [I'm on twitter](http://twitter.com/trepmal)
@@ -22,6 +20,18 @@ New plugin. Please report bugs to trepmal (at) gmail (dot) com. Thanks!
 
 This is a new plugin. Only those comfortable using and providing feedback for new plugins should use this.
 If you don't know how to install a plugin, this plugin isn't for you (yet).
+
+== Frequently Asked Questions ==
+
+= The archive was uploaded, but none of my files! =
+Up until v0.5, the uploader expected the zip file to contain files only - no folders. Meaning, if you put your files in a folder, then zipped the folder, it wouldn't work correctly.
+You can however, find those unzipped files inside the `temp` folder in the plugin's directory.
+
+= I'm using 0.5 and the archive was uploaded, but none of my files! =
+Your zip file shouldn't have any files deeper than 1 directory. (Zip some files, or zip a folder that has some files in it, but not a folder in a folder...)
+
+= The tabs in the media pop-up are all crazy =
+Sounds like you're using 2.8. Update.
 
 == Screenshots ==
 
