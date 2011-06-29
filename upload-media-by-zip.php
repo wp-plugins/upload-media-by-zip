@@ -4,7 +4,7 @@ Plugin Name: Upload Media by Zip
 Plugin URI: http://trepmal.com/plugins/upload-media-by-zip/
 Description: Upload a zip file of images and attach to a page/post
 Author: Kailey Lampert
-Version: 0.7
+Version: 0.8
 Author URI: http://kaileylampert.com/
 */
 /*
@@ -24,42 +24,63 @@ Author URI: http://kaileylampert.com/
 	along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-$upload_media_by_zip = new upload_media_by_zip( );
 
-class upload_media_by_zip {
-
+/**
+ * Upload_Media_By_Zip class
+ *
+ * class primarily used as a namespace
+ * 
+ * @package Upload Media By Zip
+ */
+class Upload_Media_By_Zip {
+	/**
+	 * Get hooked into init
+	 * 
+	 * @return void
+	 */
 	function upload_media_by_zip( ) {
-
 		add_action( 'admin_menu', array( &$this, 'menu' ) );
 		add_action( 'admin_init', array( &$this, 'get_title' ) );
-
 		add_filter( 'media_upload_tabs', array( &$this, 'create_new_tab') );
 		add_action( 'media_buttons', array( &$this, 'context'), 11 );
 		add_filter( 'media_upload_uploadzip', array( &$this, 'media_upload_uploadzip') );
 
 	}
-
+	/**
+	 * Create admin pages in menu
+	 * 
+	 * @return void
+	 */
 	function menu() {
 		$page = add_media_page( __( 'Upload Zip Archive', 'upl_med' ), __( 'Upload Zip Archive', 'upl_med' ), 'upload_files', __FILE__, array( &$this, 'page' ) );
 		add_action( 'admin_print_scripts-' . $page, array( &$this, 'scripts' ) );
 	}
-
-		function scripts() {
-			wp_enqueue_script('jquery');
-		}
-
-		function page() {
-
-			echo '<div class="wrap">';
-			echo '<h2>' . __( 'Upload Zip Archive', 'upl_med' ) . '</h2>';
-
-			echo self::handler();
-			self::form();
-
-			echo '</div>';
-
-		}// end page()
-
+	/**
+	 * Load needed scripts
+	 * 
+	 * @return void
+	 */
+	function scripts() {
+		wp_enqueue_script('jquery');
+	}
+	/**
+	 * The Admin Page
+	 * 
+	 */
+	function page() {
+		echo '<div class="wrap">';
+		echo '<h2>' . __( 'Upload Zip Archive', 'upl_med' ) . '</h2>';
+		echo self::handler();
+		self::form();
+		echo '</div>';
+	}
+	/**
+	 * Get page title based on ID in $_GET
+	 * 
+	 * Used so JavaScript can make an ajax request for the page title
+	 * die()s on page title or nothing
+	 * 
+	 */
 	function get_title() {
 		if (isset($_GET['get_page_by_title'])) {
 			$p = get_post( $_GET['get_page_by_title'] );
@@ -68,32 +89,74 @@ class upload_media_by_zip {
 			die();
 		}
 	}
-
-	function media_upload_uploadzip() {
-	    $errors = false;
-		return wp_iframe( array( &$this, 'media_uploadzip_tab_content' ), 'media', $errors );
-	}
-
-		function media_uploadzip_tab_content($errors) {
-			global $type;
-			$message = self::handler();
-
-			media_upload_header();
-			$post_id = isset( $_REQUEST['post_id'] ) ? intval( $_REQUEST['post_id'] ) : 0;
-
-			$form_action_url = admin_url("media-upload.php?type=$type&tab=uploadzip&post_id=$post_id");
-			$form_action_url = apply_filters('media_upload_form_url', $form_action_url, $type );
-
-			echo $message;
-			self::form( array('action' => $form_action_url, 'post_id' => $post_id ) );
-
-		}
-
+	/**
+	 * Add the new tab to the media pop-ip
+	 *
+	 * @param array $tabs Existing media tabs 
+	 * @return array $tabs Modified media tabs 
+	 */
 	function create_new_tab( $tabs ) {
 		$tabs['uploadzip'] = __('Upload Zip Archive');
 	    return $tabs;
 	}
+	/**
+	 * Prepare the tab in the media pop-up
+	 * 
+	 * @return string iframe
+	 */
+	function media_upload_uploadzip() {
+	    $errors = false;
+		if ( isset($_POST['send']) ) {
+			
+			// Build output
+			$html = '';
+			$size = $_POST['size'];
+			if (!empty($_POST['altsize'])) $size = explode(',', $_POST['altsize'] );
+			
+			foreach( $_POST['srcs'] as $k => $id ) {
+				$html .= wp_get_attachment_image( $id, $size );
+				$html .= ' ';
+			}
+			// Return it to TinyMCE
+			return media_send_to_editor($html);
+		}
+		return wp_iframe( array( &$this, 'media_uploadzip_tab_content' ), 'media', $errors );
+	}
+	/**
+	 * Media tab content
+	 * 
+	 */
+	function media_uploadzip_tab_content($errors) {
+		global $type;
+		$message = self::handler();
 
+		media_upload_header();
+		$post_id = isset( $_REQUEST['post_id'] ) ? intval( $_REQUEST['post_id'] ) : 0;
+
+		$form_action_url = admin_url("media-upload.php?type=$type&tab=uploadzip&post_id=$post_id");
+		$form_action_url = apply_filters('media_upload_form_url', $form_action_url, $type );
+
+		if (!empty( $message) ) {
+			echo '<form action="" method="post">';
+			echo $message;
+			echo '<select name="size">';
+			$sizes = get_intermediate_image_sizes();
+			foreach ( $sizes as $sz ) {
+				echo '<option>'.$sz.'</option>';
+			}
+			echo '</select>';
+			echo 'Alt size: <input type="text" name="altsize" value"" /> (Ex: 400,300)';
+			echo '<input type="submit" class="button-primary" value="Experimental - Insert attachments into post" name="send"/>';
+			echo '</form>';
+		}
+
+		self::form( array('action' => $form_action_url, 'post_id' => $post_id ) );
+
+	}
+	/**
+	 * Add new button to Upload/Insert icons
+	 * 
+	 */
 	function context() {
 		global $post_ID;
 		$button  = '<a class="thickbox" href="'. admin_url("media-upload.php?post_id={$post_ID}&tab=uploadzip&TB_iframe=1").'" title="Upload and Extract a Zip Archive">';
@@ -101,7 +164,14 @@ class upload_media_by_zip {
 		$button .= '</a>';
 		echo $button;
 	}
-
+	/**
+	 * Move unzipped content from temp folder to media library
+	 *
+	 * @param string $dir Directory to loop through
+	 * @param integer $parent Page ID to be used as attachment parent
+	 * @param string $return String to append results to
+	 * @return string Results as <li> items
+	 */
 	function move_from_dir( $dir, $parent, $return = '' ) {
 		//make sure we have a trailing slash
 		$dir .= '/'; $dir = str_replace('//','/', $dir);
@@ -124,8 +194,9 @@ class upload_media_by_zip {
 
 			$img_url = str_replace( WP_CONTENT_DIR, WP_CONTENT_URL, $img );
 			$file = array( 'file' => $img, 'tmp_name' => $img, 'name' => $img_name );
-			if (!is_wp_error( media_handle_sideload( $file, $parent, $title ) ) ) {
-				$return .= "<li>$img_name uploaded</li>";
+			$img_id = media_handle_sideload( $file, $parent, $title );
+			if (!is_wp_error( $img_id ) ) {
+				$return .= "<li>($img_id) $img_name uploaded <input type='hidden' name='srcs[]' value='$img_id' /></li>";
 			} else {
 				$return .= "<li style='color:#a00;'>$img_name ($dir) could not be uploaded.";
 				if (is_file($img) && unlink($img) )
@@ -140,7 +211,11 @@ class upload_media_by_zip {
 
 		return $return;
 	}
-
+	/**
+	 * Handle the initial zip upload
+	 * 
+	 * @return string HTML Results or Error message
+	 */
 	function handler() {
 		wp_enqueue_script('jquery');
 		?><script type="text/javascript">
@@ -199,8 +274,12 @@ jQuery(document).ready(function($){
 			return $return;
 		}
 
-	}//end handler()
-
+	}
+	/**
+	 * The upload form
+	 *
+	 * @param array $args 'action' URL for form action, 'post_id' ID for preset parent ID 
+	 */
 	function form( $args = array() ) {
 		$action = '';
 		$tab = false;
@@ -227,3 +306,4 @@ jQuery(document).ready(function($){
 	}
 
 }//end class
+$upload_media_by_zip = new Upload_Media_By_Zip( );

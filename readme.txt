@@ -34,6 +34,10 @@ Sounds like you're using 2.8. Update.
 
 == Changelog ==
 
+= 0.8 =
+* Experimental "Insert all into post" feature (feedback appreciated)
+* List attachment IDs with 'success' message
+
 = 0.7 =
 * fun with recursion - funky stuff should be fixed - sorry for the double update
 
@@ -58,3 +62,9 @@ Sounds like you're using 2.8. Update.
 
 = 0.1 =
 * just getting started
+
+== Upgrade Notice ==
+
+= 0.8 =
+New experimental "Insert all into post" feature. Feedback appreciated.
+
