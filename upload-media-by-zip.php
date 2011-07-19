@@ -4,7 +4,7 @@ Plugin Name: Upload Media by Zip
 Plugin URI: http://trepmal.com/plugins/upload-media-by-zip/
 Description: Upload a zip file of images and attach to a page/post
 Author: Kailey Lampert
-Version: 0.8
+Version: 0.8.1
 Author URI: http://kaileylampert.com/
 */
 /*
@@ -243,7 +243,16 @@ jQuery(document).ready(function($){
 			}
 			$file = str_replace( WP_CONTENT_URL, WP_CONTENT_DIR, wp_get_attachment_url( $upl_id ) );
 
+			/*
+				If the zipped file cannot be unzipped
+				try again after uncommenting the lines
+				below marked 1, 2, and 3
+			*/
+			///*1*/	function __return_direct() { return 'direct'; }
+			///*2*/	add_filter( 'filesystem_method', '__return_direct' );
 			WP_Filesystem();
+			///*3*/	remove_filter( 'filesystem_method', '__return_direct' );
+			
 			$to = plugins_url( 'temp', __FILE__ );
 			$to = str_replace( WP_CONTENT_URL, WP_CONTENT_DIR, $to );
 			$return = '';
@@ -252,7 +261,7 @@ jQuery(document).ready(function($){
 			$upl_name = get_the_title( $upl_id );
 			$return .= '<li id="close_box" style="list-style-type:none;cursor:pointer;float:right;">X</li>';
 			$return .= '<li>'. $upl_name .' uploaded</li>';
-			if( unzip_file( $file, $to ) ) {
+			if( !is_wp_error( unzip_file( $file, $to ) ) ) {
 				$return .= '<li>'. $upl_name .' extracted</li>';
 				$dirs = array();
 				
@@ -267,9 +276,12 @@ jQuery(document).ready(function($){
 				else {
 					$return .= '<li style="color:#a00;">'. $upl_name .' could not be deleted</li>';
 				}
-				$return .= '</ul>';
-				$return .= '</div>';
+			} else {
+				wp_delete_attachment( $upl_id );
+				$return .= '<li>'. $upl_name .' could not be extracted and has been deleted</li>';	
 			}
+			$return .= '</ul>';
+			$return .= '</div>';
 
 			return $return;
 		}

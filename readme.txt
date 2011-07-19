@@ -3,7 +3,7 @@ Contributors: trepmal
 Donate link: http://kaileylampert.com/donate/
 Tags: upload, media library, zip
 Requires at least: 2.8
-Tested up to: 3.2-beta2
+Tested up to: 3.2.1
 Stable tag: trunk
 
 Upload a zip archive and let WP unzip it and attach everything to a page/post
@@ -26,6 +26,9 @@ If you don't know how to install a plugin, this plugin isn't for you (yet).
 = The tabs in the media pop-up are all crazy =
 Sounds like you're using 2.8. Update.
 
+= The zip file uploads, but the contents aren't extracted =
+Try this: Open up the upload-media-by-zip.php file and locate <code>WP_Filesystem()</code> (line 253). Surrounding it are three lines labeled 1, 2, and three. Uncomment those.
+
 == Screenshots ==
 
 1. Original uploader (good if you don't want to attach images to another post)
@@ -33,6 +36,9 @@ Sounds like you're using 2.8. Update.
 3. Second uploader
 
 == Changelog ==
+
+= 0.8.1 =
+* Bugfix: now shows correct message on failed extraction
 
 = 0.8 =
 * Experimental "Insert all into post" feature (feedback appreciated)
