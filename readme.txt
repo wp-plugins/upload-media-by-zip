@@ -6,11 +6,11 @@ Requires at least: 2.8
 Tested up to: 3.2.1
 Stable tag: trunk
 
-Upload a zip archive and let WP unzip it and attach everything to a page/post
+Upload a zip archive and let WP unzip it and attach everything to a page/post (or not).
 
 == Description ==
 
-Upload a zip archive and let WP unzip it and attach everything to a page/post.
+Upload a zip archive and let WP unzip it and attach everything to a page/post (or not).
 
 New plugin. Please report bugs to trepmal (at) gmail (dot) com. Thanks!
 
