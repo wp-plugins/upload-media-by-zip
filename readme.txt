@@ -27,7 +27,7 @@ If you don't know how to install a plugin, this plugin isn't for you (yet).
 Sounds like you're using 2.8. Update.
 
 = The zip file uploads, but the contents aren't extracted =
-Try this: Open up the upload-media-by-zip.php file and locate <code>WP_Filesystem()</code> (line 253). Surrounding it are three lines labeled 1, 2, and three. Uncomment those.
+Try this: Open up the upload-media-by-zip.php file and locate <code>WP_Filesystem()</code> (line 257). Surrounding it are three lines labeled 1, 2, and three. Uncomment those.
 
 == Screenshots ==
 
@@ -36,6 +36,10 @@ Try this: Open up the upload-media-by-zip.php file and locate <code>WP_Filesyste
 3. Second uploader
 
 == Changelog ==
+
+= 0.9 =
+* Getting ready for translation, POT file may already be available
+* Bugfix: can now delete temporary upload despite hidden files
 
 = 0.8.1 =
 * Bugfix: now shows correct message on failed extraction
