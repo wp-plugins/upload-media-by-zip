@@ -35,7 +35,15 @@ Try this: Open up the upload-media-by-zip.php file and locate <code>WP_Filesyste
 2. Zip uploader media button
 3. Second uploader
 
+== Other Notes ==
+
+= Languages =
+* Farsi, by [mohsengham](http://www.newbie.ir/1390/04/upload-media-by-zip/)
+
 == Changelog ==
+
+= 0.9 =
+* Released with Farsi localization
 
 = 0.9 =
 * Getting ready for translation, POT file may already be available
