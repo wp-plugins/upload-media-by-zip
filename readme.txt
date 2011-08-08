@@ -44,9 +44,13 @@ Try this: Open up the upload-media-by-zip.php file and locate <code>WP_Filesyste
 * German, by [daveshine](http://deckerweb.de/)
 
 == Changelog ==
+(Localizations added without changing version number)
 
-= 0.9 =
-* Released with Farsi localization
+= 0.9 (20110808) =
+* German localization added
+
+= 0.9 (20110807) =
+* Farsi localization added
 
 = 0.9 =
 * Getting ready for translation, POT file may already be available
