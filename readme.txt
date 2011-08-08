@@ -16,6 +16,8 @@ New plugin. Please report bugs to trepmal (at) gmail (dot) com. Thanks!
 
 * [I'm on twitter](http://twitter.com/trepmal)
 
+If the zip file uploads, but the contents aren't extracted, see the FAQs.
+
 == Installation ==
 
 This is a new plugin. Only those comfortable using and providing feedback for new plugins should use this.
@@ -39,6 +41,7 @@ Try this: Open up the upload-media-by-zip.php file and locate <code>WP_Filesyste
 
 = Languages =
 * Farsi, by [mohsengham](http://www.newbie.ir/1390/04/upload-media-by-zip/)
+* German, by [daveshine](http://deckerweb.de/)
 
 == Changelog ==
 
