@@ -12,11 +12,13 @@ Upload a zip archive and let WP unzip it and attach everything to a page/post (o
 
 Upload a zip archive and let WP unzip it and attach everything to a page/post (or not).
 
+Please note that you'll still be restricted by your server's maximum upload size.
+
 New plugin. Please report bugs to trepmal (at) gmail (dot) com. Thanks!
 
 * [I'm on twitter](http://twitter.com/trepmal)
 
-If the zip file uploads, but the contents aren't extracted, see the FAQs.
+If the zip file uploads, but the contents aren't extracted, see the [FAQs](http://wordpress.org/extend/plugins/upload-media-by-zip/faq/).
 
 == Installation ==
 
@@ -25,11 +27,13 @@ If you don't know how to install a plugin, this plugin isn't for you (yet).
 
 == Frequently Asked Questions ==
 
-= The tabs in the media pop-up are all crazy =
-Sounds like you're using 2.8. Update.
-
 = The zip file uploads, but the contents aren't extracted =
 Try this: Open up the upload-media-by-zip.php file and locate <code>WP_Filesystem()</code> (line 257). Surrounding it are three lines labeled 1, 2, and three. Uncomment those.
+
+This problem happens only on some server setups, I haven't experienced it personally which makes it difficult for me to provide a better solution. If you have one, please share.
+
+= The tabs in the media pop-up are all crazy =
+Sounds like you're using 2.8. Update.
 
 == Screenshots ==
 
@@ -89,6 +93,9 @@ Try this: Open up the upload-media-by-zip.php file and locate <code>WP_Filesyste
 * just getting started
 
 == Upgrade Notice ==
+
+= 0.9 =
+Speak something besides English? Translate this plugin!
 
 = 0.8 =
 New experimental "Insert all into post" feature. Feedback appreciated.
